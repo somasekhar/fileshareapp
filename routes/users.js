@@ -3,6 +3,7 @@ var express = require('express');
 	mongoose = require('mongoose'), //mongo connection
     bodyParser = require('body-parser'), //parses information from POST
     methodOverride = require('method-override'); //used to manipulate POST
+    bCrypt = require('bcrypt-nodejs');
 
 router.use(bodyParser.urlencoded({ extended: true }))
 router.use(methodOverride(function(req, res){
@@ -12,7 +13,7 @@ router.use(methodOverride(function(req, res){
         delete req.body._method
         return method
       }
-}))
+}));
 
 router.route('/')
     //GET all users
@@ -43,11 +44,11 @@ router.route('/')
     .post(function(req, res) {
         // Get values from POST request. These can be done through forms or REST calls. These rely on the "name" attributes for forms
         var name = req.body.name;
-        var password = req.body.password
+        var password = req.body.password;
         //call the create function for our database
         mongoose.model('User').create({
             name : name,
-            password = createHash(password)
+            password : createHash(password)
         }, function (err, user) {
               if (err) {
                   res.send("There was a problem adding the information to the database.");
@@ -227,7 +228,7 @@ router.delete('/:id/edit', function (req, res){
 // Generates hash using bCrypt
 var createHash = function(password){
  return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
-}
+};
 
 
 module.exports = router;
