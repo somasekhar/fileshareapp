@@ -10,6 +10,7 @@ var users = require('./routes/users');
 var usergroups = require('./routes/usergroups');
 var db = require('./model/db');
 var usergroup = require('./model/usergroup')
+var user = require('./model/user')
 var app = express();
 
 
